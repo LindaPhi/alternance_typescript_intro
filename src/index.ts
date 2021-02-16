@@ -1,18 +1,20 @@
+import Enemy from "./Perso/Enemy";
 
 const prompts = require('prompts');
 // @ts-ignore
-import Character from "./Character";
+import Character from "./Perso/Character";
+import * as Console from "console";
 (async () => {
-    const question =  [
+    const choiceYourCharacter =  [
         {
             type: 'text',
             name: 'name',
-            message: 'Veuillez renseigner votre nom de personnage :'
+            message: 'Enter your character name :'
         },
         {
             type: 'select',
             name: 'gender',
-            message: 'Veuillez renseigner le genre de votre personnage F/M/N :',
+            message: 'Which gender ? :',
             choices: [
                 { title: 'Female', value: 'Female' },
                 { title: 'Male', value: 'Male' },
@@ -22,10 +24,29 @@ import Character from "./Character";
 
     ];
 
-    const response = await prompts(question);
-    let myCharacter: Character =  new Character(response.name,response.gender,100);
+    const response1 = await prompts(choiceYourCharacter);
+    let myCharacter: Character =  new Character(response1.name,response1.gender,100);
     myCharacter.summary();
-    console.log('Ennemi en approche !');
+    console.log('ENEMY IS COMING !');
+    const fightOrFail =  [
+        {
+            type: 'select',
+            name: 'fightOrFail',
+            message: 'Fight or fail ? :',
+            choices: ['Fight', 'Fail']
+        }
+    ]
+    const response2 = await prompts(fightOrFail);
+
+    if (response2.choices == 'Fail'){
+        console.log('GAME OVER')
+    }
+    else{
+        let myEnemy = new Enemy();
+        console.log('Your enemy has '+myEnemy.life);
+
+        myCharacter.attack(myEnemy);
+    }
     })();
 
 
